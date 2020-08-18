@@ -1,8 +1,22 @@
+// npm install will install all of the different dependencies listed in the package.json
 const http = require('http');
 const fs = require('fs');
+const _ = require('lodash');
 
 const server = http.createServer((req, res) =>{
 
+    // lodash
+    const num = _.random(0, 20);
+    console.group(num);
+
+    const greet = _.once(() => {
+        console.log('hey');
+    });
+
+    greet();
+    greet();
+
+    // set header and content type
     res.setHeader('Content-type', 'text-html')
     let path = './views/';
     
@@ -15,7 +29,7 @@ const server = http.createServer((req, res) =>{
             path += 'about.html';
             res.statusCode = 200;
             break;
-        case '/about-me':
+        case '/about-us':
             path += 'about.html'
             res.statusCode = 301;
             break;
