@@ -1,0 +1,9 @@
+Get Requests - get a resource
+Post - Create new data
+Delete - deletes data
+Put - update exisiting data
+localhost:3000/blog is a get request
+localhost:3000/blogs - create a new blog needs a post request
+localhost:3000/blogs/:id would be a route item and get request
+localhost:3000/blogs/:id would be a delete request
+we're not going to use the put request in this application
