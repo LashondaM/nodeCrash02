@@ -3,8 +3,8 @@ const {Server} = require('http');
 const { nextTick } = require('process');
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const blog = require('./models/blog');
-const Blog = require('./models/blog');
+const { response } = require('express');
+const blogRoutes = require('./routes/blogRoutes');
 
 const app = express();
 
@@ -27,28 +27,14 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true} )
   console.log(err)
 })
 
-// route sandbox
-app.post('/add-blog', (req, res) => {
-    // new Blog takes the blog model and saves a new collection item to a variable in this case blog
-    const blog = new Blog({
-        title: 'Jamie eats dirt',
-        snippet: "It's true!",
-        body: "and his tooth is broken, what a loser"
-    })
 
-    blog.save()
-.then((result) => {
-    res.send(result)
-})
-.catch((err) => {
-    console.log(err)
-})
 
-})
 // use the .save method on blog
 // .save is an asynchonous function
 
 // return all records in blogs collection
+
+
 app.get('/all-blogs', (req, res) => {
     Blog.find()
     .then((result) =>{
@@ -114,35 +100,8 @@ app.get('/about', (req, res) =>{
     // res.render takes an argument of a string that is the file to render.
     // ejs automatically knows to look in your view folder
 });
-app.get("/blogs", (req,res) => {
-    Blog.find()
-    .then((result) => {
-        res.render('index', {title: 'All Blogs', blogs: result})
-    })
-    .catch((err) => {
-        console.log(err)
-    })
-})
 
-
-app.post('/blogs', (req, res) => {
-    console.log(req.body)
-    const blog = new Blog(
-        req.body
-    )
-    blog.save()
-    .then((result) => {
-        res.redirect('/blogs')
-    })
-    .catch((err) => {
-        console.log(err)
-    })
-})
-
-
-app.get("/blogs/create", (req,res) => {
-    res.render('create', {title: 'Create'})
-  })
+app.use('/blogs', blogRoutes);
 
 // app.get('/about-us', (req, res) => {
 //     res.redirect('/about');

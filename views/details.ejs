@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('./partials/head.ejs') %>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+        <div class="details content">
+            <h2><%= blog.title %></h2>
+            <div class="content">
+                <p><%= blog.body %></p>
+            </div>
+            <a class="delete" data-doc="<%= blog._id %>" href="">delete</a>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>
+        <!-- = turns everything into a string, you'll see it on your webpage, so we use the - symbol -->
+
+    <script>
+        const trashcan = document.querySelector('a.delete')
+    trashcan.addEventListener('click', (e)=>{
+    const endpoint = `/blogs/${trashcan.dataset.doc}`;
+    fetch(endpoint, {
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => window.location.href = data.redirect)
+    .then(()=>{console.log('redirected')})
+    .catch(err => console.log(err))
+})
+        // endpoint is the point of entry where communication happens between the server and the client side
+        
+    </script>
+    
+</body>
+</html>
